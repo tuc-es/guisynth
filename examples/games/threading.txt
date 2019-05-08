@@ -1,0 +1,52 @@
+UVWBasedGame
+Input init
+Input threadA.terminate
+Input threadB.terminate
+Input buttonA.press
+Output done
+Output threadA.start
+Output threadB.start
+Output buttonA.disable
+Output buttonA.enable
+
+State Assumptions rej reject
+State Assumptions q0 initial
+State Assumptions bdis initial
+State Assumptions waitA reject
+State Assumptions waitB reject
+State Assumptions waitInit initial
+
+Transition Assumptions rej TRUE rej
+Transition Assumptions waitInit ! init rej
+
+Transition Assumptions q0 TRUE q0
+Transition Assumptions q0 buttonA.disable bdis
+Transition Assumptions bdis buttonA.press rej
+Transition Assumptions bdis ! buttonA.enable bdis
+Transition Assumptions q0 threadA.start waitA
+Transition Assumptions waitA ! threadA.terminate waitA
+Transition Assumptions q0 threadB.start waitB
+Transition Assumptions waitB ! threadB.terminate waitB
+
+State Guarantees rej reject
+Transition Guarantees rej TRUE rej
+State Guarantees q0 initial
+State Guarantees bAfterA initial
+State Guarantees needB reject
+
+Transition Guarantees q0 TRUE q0
+Transition Guarantees q0 threadB.start bAfterA
+Transition Guarantees bAfterA threadB.start rej
+Transition Guarantees bAfterA ! threadA.terminate bAfterA
+
+Transition Guarantees q0 buttonA.press needB
+Transition Guarantees needB ! threadB.terminate needB
+
+State Guarantees threadARunning 
+State Guarantees threadBRunning 
+Transition Guarantees q0 threadA.start threadARunning
+Transition Guarantees threadARunning ! threadA.terminate threadARunning
+Transition Guarantees threadARunning threadA.start rej
+Transition Guarantees q0 threadB.start threadBRunning
+Transition Guarantees threadBRunning ! threadB.terminate threadBRunning
+Transition Guarantees threadBRunning threadB.start rej

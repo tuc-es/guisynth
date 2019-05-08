@@ -1,0 +1,187 @@
+[CustomInputActions]
+MenuItemAddExpense
+MenuItemExpenseList
+MenuItemNewTeam
+MenuItemNonApprovedExpenses
+MenuItemOfflineActions
+MenuItemOverview
+MenuItemSelectAccount
+MenuItemTeamAdministration
+MenuItemTrackReimbursement
+newTeamSuccessfullyCreated
+newTeamIdentifierIsFine
+loadTeamSucceed
+loadTeamFail
+addExpenseSucceed
+actionToBeExecutedWasStored
+
+[CustomOutputActions]
+activateMenuItemsOtherThanSelectAccountAndNewAccount
+deactivateMenuItemsOtherThanSelectAccountAndNewAccount
+addMemberToTeam
+addTeamToTeamList
+updateUnstoredDataView
+addExpense
+
+
+[Threads]
+registerNewTeam
+loadTeam
+storeData
+
+[Assumptions]
+
+# Init
+init
+X G ! init
+
+# Thread termination
+G(registerNewTeam.start -> F registerNewTeam.terminates)
+G(loadTeam.start -> F loadTeam.terminates)
+G(storeData.start -> F storeData.terminates)
+
+# Buttons are unclickable
+G(buttonAddTeam.disable -> !buttonAddTeam.click W buttonAddTeam.enable)
+
+# ListViews are unselectable
+G(listViewAvailableTeams.disable -> !listViewAvailableTeams.selected W listViewAvailableTeams.enable)
+
+# registerNewTeam
+G(registerNewTeam.terminates -> (!newTeamSuccessfullyCreated W registerNewTeam.start))
+!registerNewTeam.terminates W registerNewTeam.start
+
+G(newTeamSuccessfullyCreated -> !done U loadTeam.start)
+G(newTeamIdentifierIsFine -> !done U loadTeam.start)
+
+[Guarantees]
+
+
+# Which view is visible?
+G(MenuItemSelectAccount -> !done U PanelSelectAccount.show)
+G(MenuItemSelectAccount -> !done U PanelExpenseList.hide)
+G(MenuItemSelectAccount -> !done U PanelAddTeam.hide)
+G(MenuItemSelectAccount -> !done U PanelAdmin.hide)
+G(MenuItemSelectAccount -> !done U PanelSelectAccount.hide)
+G(MenuItemSelectAccount -> !done U PanelOverview.hide)
+G(MenuItemSelectAccount -> !done U PanelExpensesToApprove.hide)
+G(MenuItemSelectAccount -> !done U PanelOfflineActions.hide)
+G(MenuItemSelectAccount -> !done U PanelAddExpense.hide)
+
+G(MenuItemNewTeam -> !done U PanelSelectAccount.hide)
+G(MenuItemNewTeam -> !done U PanelExpenseList.hide)
+G(MenuItemNewTeam -> !done U PanelAddTeam.show)
+G(MenuItemNewTeam -> !done U PanelAdmin.hide)
+G(MenuItemNewTeam -> !done U PanelSelectAccount.hide)
+G(MenuItemNewTeam -> !done U PanelOverview.hide)
+G(MenuItemNewTeam -> !done U PanelExpensesToApprove.hide)
+G(MenuItemNewTeam -> !done U PanelOfflineActions.hide)
+G(MenuItemNewTeam -> !done U PanelAddExpense.hide)
+
+G(MenuItemTeamAdministration -> !done U PanelSelectAccount.hide)
+G(MenuItemTeamAdministration -> !done U PanelExpenseList.hide)
+G(MenuItemTeamAdministration -> !done U PanelAddTeam.hide)
+G(MenuItemTeamAdministration -> !done U PanelAdmin.show)
+G(MenuItemTeamAdministration -> !done U PanelSelectAccount.hide)
+G(MenuItemTeamAdministration -> !done U PanelOverview.hide)
+G(MenuItemTeamAdministration -> !done U PanelExpensesToApprove.hide)
+G(MenuItemTeamAdministration -> !done U PanelOfflineActions.hide)
+G(MenuItemTeamAdministration -> !done U PanelAddExpense.hide)
+
+G(MenuItemOverview -> !done U PanelSelectAccount.hide)
+G(MenuItemOverview -> !done U PanelExpenseList.hide)
+G(MenuItemOverview -> !done U PanelAddTeam.hide)
+G(MenuItemOverview -> !done U PanelAdmin.hide)
+G(MenuItemOverview -> !done U PanelSelectAccount.hide)
+G(MenuItemOverview -> !done U PanelOverview.show)
+G(MenuItemOverview -> !done U PanelExpensesToApprove.hide)
+G(MenuItemOverview -> !done U PanelOfflineActions.hide)
+G(MenuItemOverview -> !done U PanelAddExpense.hide)
+
+G(MenuItemExpenseList -> !done U PanelSelectAccount.hide)
+G(MenuItemExpenseList -> !done U PanelExpenseList.show)
+G(MenuItemExpenseList -> !done U PanelAddTeam.hide)
+G(MenuItemExpenseList -> !done U PanelAdmin.hide)
+G(MenuItemExpenseList -> !done U PanelSelectAccount.hide)
+G(MenuItemExpenseList -> !done U PanelOverview.hide)
+G(MenuItemExpenseList -> !done U PanelExpensesToApprove.hide)
+G(MenuItemExpenseList -> !done U PanelOfflineActions.hide)
+G(MenuItemExpenseList -> !done U PanelAddExpense.hide)
+
+G(MenuItemNonApprovedExpenses -> !done U PanelSelectAccount.hide)
+G(MenuItemNonApprovedExpenses -> !done U PanelExpenseList.hide)
+G(MenuItemNonApprovedExpenses -> !done U PanelAddTeam.hide)
+G(MenuItemNonApprovedExpenses -> !done U PanelAdmin.hide)
+G(MenuItemNonApprovedExpenses -> !done U PanelSelectAccount.hide)
+G(MenuItemNonApprovedExpenses -> !done U PanelOverview.hide)
+G(MenuItemNonApprovedExpenses -> !done U PanelExpensesToApprove.show)
+G(MenuItemNonApprovedExpenses -> !done U PanelOfflineActions.hide)
+G(MenuItemNonApprovedExpenses -> !done U PanelAddExpense.hide)
+
+G(MenuItemOfflineActions -> !done U PanelSelectAccount.hide)
+G(MenuItemOfflineActions -> !done U PanelExpenseList.hide)
+G(MenuItemOfflineActions -> !done U PanelAddTeam.hide)
+G(MenuItemOfflineActions -> !done U PanelAdmin.hide)
+G(MenuItemOfflineActions -> !done U PanelSelectAccount.hide)
+G(MenuItemOfflineActions -> !done U PanelOverview.hide)
+G(MenuItemOfflineActions -> !done U PanelExpensesToApprove.hide)
+G(MenuItemOfflineActions -> !done U PanelOfflineActions.show)
+G(MenuItemOfflineActions -> !done U PanelAddExpense.hide)
+
+G(MenuItemAddExpense -> !done U PanelSelectAccount.hide)
+G(MenuItemAddExpense -> !done U PanelExpenseList.hide)
+G(MenuItemAddExpense -> !done U PanelAddTeam.hide)
+G(MenuItemAddExpense -> !done U PanelAdmin.hide)
+G(MenuItemAddExpense -> !done U PanelSelectAccount.hide)
+G(MenuItemAddExpense -> !done U PanelOverview.hide)
+G(MenuItemAddExpense -> !done U PanelExpensesToApprove.hide)
+G(MenuItemAddExpense -> !done U PanelOfflineActions.hide)
+G(MenuItemAddExpense -> !done U PanelAddExpense.show)
+
+init -> !done U PanelSelectAccount.show
+init -> !done U PanelExpenseList.hide
+init -> !done U PanelAddTeam.hide
+init -> !done U PanelAdmin.hide
+init -> !done U PanelSelectAccount.hide
+init -> !done U PanelOverview.hide
+init -> !done U PanelExpensesToApprove.hide
+init -> !done U PanelOfflineActions.hide
+init -> !done U PanelAddExpense.hide
+init -> !done U deactivateMenuItemsOtherThanSelectAccountAndNewAccount
+
+
+G(loadTeamSucceed -> !done U activateMenuItemsOtherThanSelectAccountAndNewAccount)
+G(loadTeamSucceed -> !done U updateUnstoredDataView)
+G(loadTeamFail -> !done U deactivateMenuItemsOtherThanSelectAccountAndNewAccount)
+
+
+# Adding members to a (new) team
+G(buttonAddMember.click -> !done U addMemberToTeam)
+G(buttonAddTeam.click -> !done U registerNewTeam.start)
+
+
+# No parallel threads to RegisterNewTeam
+G(registerNewTeam.start -> X !registerNewTeam.start U registerNewTeam.terminates)
+G(registerNewTeam.start -> X !loadTeam.start U registerNewTeam.terminates)
+G(registerNewTeam.start -> X !storeData.start U registerNewTeam.terminates)
+G(loadTeam.start -> X !registerNewTeam.start U loadTeam.start)
+G(loadTeam.start -> X !loadTeam.start U loadTeam.start)
+G(loadTeam.start -> X !storeData.start U loadTeam.start)
+G(storeData.start -> X !registerNewTeam.start U storeData.start)
+G(storeData.start -> X !loadTeam.start U storeData.start)
+G(storeData.start -> X !storeData.start U storeData.start)
+
+
+# New Team ID
+G(buttonLoginTeam.click -> !done U addTeamToTeamList)
+G(listViewAvailableTeams.selected -> !done U loadTeam.start)
+G(newTeamSuccessfullyCreated -> !done U loadTeam.start)
+G(addTeamToTeamList -> (ANYOUTPUTS W (newTeamIdentifierIsFine -> !done U loadTeam.start)))
+
+# Store data thread
+G(storeData.terminates -> ((actionToBeExecutedWasStored -> !done U storeData.start) W storeData.start))
+(actionToBeExecutedWasStored -> !done U storeData.start) W storeData.start
+# Update view
+G(storeData.terminates -> F loadTeam.start) 
+
+# Add Expense -- Immediate action
+G(buttonAddExpense.click -> !done U addExpense)

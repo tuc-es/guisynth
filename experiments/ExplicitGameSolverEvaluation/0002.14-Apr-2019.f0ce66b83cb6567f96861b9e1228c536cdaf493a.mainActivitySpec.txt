@@ -1,0 +1,66 @@
+[CustomInputActions]
+MenuItemAddExpense
+MenuItemExpenseList
+MenuItemNewTeam
+MenuItemNonApprovedExpenses
+MenuItemOfflineActions
+MenuItemOverview
+MenuItemSelectAccount
+MenuItemTeamAdministration
+MenuItemTrackReimbursement
+
+[CustomOutputActions]
+activateMenuItemsOtherThanSelectAccountAndNewAccount
+deactivateMenuItemsOtherThanSelectAccountAndNewAccount
+addMemberToTeam
+
+
+
+[Threads]
+registerNewTeam
+loadTeam
+
+[Assumptions]
+
+# Init
+init
+X G ! init
+
+# Thread termination
+G(registerNewTeam.start -> F registerNewTeam.terminates)
+
+# Buttons are unclickable
+G(buttonAddTeam.disable -> !buttonAddTeam.click W buttonAddTeam.enable)
+
+[Guarantees]
+
+
+# Which view is visible?
+G(MenuItemSelectAccount -> !done U PanelSelectAccount.show)
+G(MenuItemSelectAccount -> !done U PanelExpenseList.hide)
+G(MenuItemSelectAccount -> !done U PanelAddTeam.hide)
+
+G(MenuItemAddExpense -> !done U PanelSelectAccount.hide)
+G(MenuItemAddExpense -> !done U PanelExpenseList.show)
+G(MenuItemAddExpense -> !done U PanelAddTeam.hide)
+
+G(MenuItemNewTeam -> !done U PanelSelectAccount.hide)
+G(MenuItemNewTeam -> !done U PanelExpenseList.hide)
+G(MenuItemNewTeam -> !done U PanelAddTeam.show)
+
+init -> !done U PanelSelectAccount.show
+init -> !done U PanelExpenseList.hide
+init -> !done U PanelAddTeam.hide
+init -> !done U deactivateMenuItemsOtherThanSelectAccountAndNewAccount
+
+
+
+# Adding members to a (new) team
+G(buttonAddMember.click -> !done U addMemberToTeam)
+G(buttonAddTeam.click -> !done U registerNewTeam.start)
+
+
+# No parallel threads to RegisterNewTeam
+G(registerNewTeam.start -> X !registerNewTeam.start U registerNewTeam.terminates)
+G(registerNewTeam.start -> X !loadTeam.start U registerNewTeam.terminates)
+

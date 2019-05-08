@@ -1,0 +1,43 @@
+UVWBasedGame
+Input buttonA.click
+Input buttonB.click
+Output done
+Output buttonA.enable
+Output buttonA.disable
+State Assumptions q0 reject
+Transition Assumptions q0 TRUE q0
+
+State Guarantees q0 reject
+State Guarantees q1 reject
+State Guarantees q2 reject
+State Guarantees q3
+State Guarantees q4 initial
+State Guarantees q5
+State Guarantees q6 reject
+Transition Guarantees q0 TRUE q0
+Transition Guarantees q1 ! buttonA.disable q1
+Transition Guarantees q1 & ! buttonA.disable done q0
+Transition Guarantees q2 ! buttonA.enable q2
+Transition Guarantees q2 & done ! buttonA.enable q0
+Transition Guarantees q3 & buttonB.click ! buttonA.enable q2
+Transition Guarantees q3 & & done buttonB.click ! buttonA.enable q0
+Transition Guarantees q3 ! buttonB.click q3
+Transition Guarantees q4 & & buttonA.disable buttonB.click ! buttonA.enable q2
+Transition Guarantees q4 & & & & buttonA.click buttonA.disable done buttonB.click ! buttonA.enable q0
+Transition Guarantees q4 & & buttonA.click ! buttonA.disable done q0
+Transition Guarantees q4 & & & & ! buttonA.click buttonA.disable done buttonB.click ! buttonA.enable q0
+Transition Guarantees q4 & & & & ! buttonA.click ! buttonA.disable done buttonB.click buttonA.enable q0
+Transition Guarantees q4 & buttonA.disable ! buttonB.click q3
+Transition Guarantees q4 TRUE q4
+Transition Guarantees q4 & buttonA.click ! buttonA.disable q1
+Transition Guarantees q4 & & & ! buttonA.click ! buttonA.disable buttonB.click buttonA.enable q1
+Transition Guarantees q4 & ! buttonB.click buttonA.enable q5
+# Transition Guarantees q4 buttonA.disable q6
+# Transition Guarantees q4 & ! buttonA.disable buttonA.enable q6
+Transition Guarantees q5 & ! buttonA.disable buttonB.click q1
+Transition Guarantees q5 & & ! buttonA.disable done buttonB.click q0
+Transition Guarantees q5 ! buttonB.click q5
+Transition Guarantees q6 ! done q6
+Transition Guarantees q6 & buttonA.disable ! done q0
+Transition Guarantees q6 & & ! buttonA.disable ! done buttonA.enable q0
+

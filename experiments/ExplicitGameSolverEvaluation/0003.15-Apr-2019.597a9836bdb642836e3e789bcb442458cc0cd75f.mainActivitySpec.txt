@@ -1,0 +1,116 @@
+[CustomInputActions]
+MenuItemAddExpense
+MenuItemExpenseList
+MenuItemNewTeam
+MenuItemNonApprovedExpenses
+MenuItemOfflineActions
+MenuItemOverview
+MenuItemSelectAccount
+MenuItemTeamAdministration
+MenuItemTrackReimbursement
+newTeamSuccessfullyCreated
+newTeamIdentifierIsFine
+loadTeamSucceed
+loadTeamFail
+
+[CustomOutputActions]
+activateMenuItemsOtherThanSelectAccountAndNewAccount
+deactivateMenuItemsOtherThanSelectAccountAndNewAccount
+addMemberToTeam
+addTeamToTeamList
+
+
+
+[Threads]
+registerNewTeam
+loadTeam
+
+[Assumptions]
+
+# Init
+init
+X G ! init
+
+# Thread termination
+G(registerNewTeam.start -> F registerNewTeam.terminates)
+G(loadTeam.start -> F loadTeam.terminates)
+
+# Buttons are unclickable
+G(buttonAddTeam.disable -> !buttonAddTeam.click W buttonAddTeam.enable)
+
+# ListViews are unselectable
+G(listViewAvailableTeams.disable -> !listViewAvailableTeams.selected W listViewAvailableTeams.enable)
+
+# registerNewTeam
+G(registerNewTeam.terminates -> (!newTeamSuccessfullyCreated W registerNewTeam.start))
+!registerNewTeam.terminates W registerNewTeam.start
+
+G(newTeamSuccessfullyCreated -> !done U loadTeam.start)
+G(newTeamIdentifierIsFine -> !done U loadTeam.start)
+
+[Guarantees]
+
+
+# Which view is visible?
+G(MenuItemSelectAccount -> !done U PanelSelectAccount.show)
+G(MenuItemSelectAccount -> !done U PanelExpenseList.hide)
+G(MenuItemSelectAccount -> !done U PanelAddTeam.hide)
+G(MenuItemSelectAccount -> !done U PanelAdmin.hide)
+G(MenuItemSelectAccount -> !done U PanelSelectAccount.hide)
+G(MenuItemSelectAccount -> !done U PanelOverview.hide)
+
+G(MenuItemAddExpense -> !done U PanelSelectAccount.hide)
+G(MenuItemAddExpense -> !done U PanelExpenseList.show)
+G(MenuItemAddExpense -> !done U PanelAddTeam.hide)
+G(MenuItemAddExpense -> !done U PanelAdmin.hide)
+G(MenuItemAddExpense -> !done U PanelSelectAccount.hide)
+G(MenuItemAddExpense -> !done U PanelOverview.hide)
+
+G(MenuItemNewTeam -> !done U PanelSelectAccount.hide)
+G(MenuItemNewTeam -> !done U PanelExpenseList.hide)
+G(MenuItemNewTeam -> !done U PanelAddTeam.show)
+G(MenuItemNewTeam -> !done U PanelAdmin.hide)
+G(MenuItemNewTeam -> !done U PanelSelectAccount.hide)
+G(MenuItemNewTeam -> !done U PanelOverview.hide)
+
+G(MenuItemTeamAdministration -> !done U PanelSelectAccount.hide)
+G(MenuItemTeamAdministration -> !done U PanelExpenseList.hide)
+G(MenuItemTeamAdministration -> !done U PanelAddTeam.hide)
+G(MenuItemTeamAdministration -> !done U PanelAdmin.show)
+G(MenuItemTeamAdministration -> !done U PanelSelectAccount.hide)
+G(MenuItemTeamAdministration -> !done U PanelOverview.hide)
+
+G(MenuItemOverview -> !done U PanelSelectAccount.hide)
+G(MenuItemOverview -> !done U PanelExpenseList.hide)
+G(MenuItemOverview -> !done U PanelAddTeam.hide)
+G(MenuItemOverview -> !done U PanelAdmin.hide)
+G(MenuItemOverview -> !done U PanelSelectAccount.hide)
+G(MenuItemOverview -> !done U PanelOverview.show)
+
+init -> !done U PanelSelectAccount.show
+init -> !done U PanelExpenseList.hide
+init -> !done U PanelAddTeam.hide
+init -> !done U PanelAdmin.hide
+init -> !done U PanelSelectAccount.hide
+init -> !done U PanelOverview.hide
+init -> !done U deactivateMenuItemsOtherThanSelectAccountAndNewAccount
+
+G(loadTeamSucceed -> !done U activateMenuItemsOtherThanSelectAccountAndNewAccount)
+G(loadTeamFail -> !done U deactivateMenuItemsOtherThanSelectAccountAndNewAccount)
+
+
+# Adding members to a (new) team
+G(buttonAddMember.click -> !done U addMemberToTeam)
+G(buttonAddTeam.click -> !done U registerNewTeam.start)
+
+
+# No parallel threads to RegisterNewTeam
+G(registerNewTeam.start -> X !registerNewTeam.start U registerNewTeam.terminates)
+G(registerNewTeam.start -> X !loadTeam.start U registerNewTeam.terminates)
+
+# New Team ID
+G(buttonLoginTeam.click -> !done U addTeamToTeamList)
+G(listViewAvailableTeams.selected -> !done U loadTeam.start)
+G(newTeamSuccessfullyCreated -> !done U loadTeam.start)
+G(addTeamToTeamList -> (ANYOUTPUTS W (newTeamIdentifierIsFine -> !done U loadTeam.start)))
+# TODO: Test if the button is now active...

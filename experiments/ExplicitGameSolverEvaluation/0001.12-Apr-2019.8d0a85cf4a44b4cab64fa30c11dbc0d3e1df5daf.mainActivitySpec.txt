@@ -1,0 +1,34 @@
+[CustomInputActions]
+MenuItemAddExpense
+MenuItemExpenseList
+MenuItemNewTeam
+MenuItemNonApprovedExpenses
+MenuItemOfflineActions
+MenuItemOverview
+MenuItemSelectAccount
+MenuItemTeamAdministration
+MenuItemTrackReimbursement
+
+[CustomOutputActions]
+
+
+
+[Threads]
+
+[Assumptions]
+
+init
+X G ! init
+
+[Guarantees]
+
+
+# Which view is visible?
+G(MenuItemSelectAccount -> !done U PanelSelectAccount.show)
+G(MenuItemSelectAccount -> !done U PanelExpenseList.hide)
+
+G(MenuItemAddExpense -> !done U PanelSelectAccount.hide)
+G(MenuItemAddExpense -> !done U PanelExpenseList.show)
+
+init -> !done U PanelSelectAccount.show
+init -> !done U PanelExpenseList.hide

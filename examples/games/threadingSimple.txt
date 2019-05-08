@@ -1,0 +1,36 @@
+UVWBasedGame
+Input init
+Input threadA.terminate
+Input buttonA.press
+Output done
+Output threadA.start
+Output buttonA.disable
+Output buttonA.enable
+
+State Assumptions rej reject
+State Assumptions q0 initial
+State Assumptions bdis initial
+State Assumptions waitA reject
+State Assumptions waitInit initial
+
+Transition Assumptions rej TRUE rej
+Transition Assumptions waitInit ! init rej
+
+Transition Assumptions q0 TRUE q0
+Transition Assumptions q0 buttonA.disable bdis
+Transition Assumptions bdis buttonA.press rej
+Transition Assumptions bdis ! buttonA.enable bdis
+Transition Assumptions q0 threadA.start waitA
+Transition Assumptions waitA ! threadA.terminate waitA
+
+State Guarantees rej reject
+Transition Guarantees rej TRUE rej
+
+State Guarantees q0 initial
+State Guarantees needA reject
+
+Transition Guarantees q0 TRUE q0
+
+Transition Guarantees q0 buttonA.press needA
+Transition Guarantees needA ! threadA.terminate needA
+

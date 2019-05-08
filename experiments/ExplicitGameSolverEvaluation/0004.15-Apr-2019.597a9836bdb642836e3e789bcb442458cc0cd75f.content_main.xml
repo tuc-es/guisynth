@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/app_bar_main">
+
+
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/PanelOverview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="1"
+        android:rowCount="1"
+        >
+
+        <WebView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/webViewOverview"
+            android:background="#FC3321"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            />
+
+
+    </GridLayout>
+
+
+    <TableLayout
+        android:id="@+id/PanelExpenseList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:text="Second Pane"
+            android:padding="3dip" />
+        <TextView
+            android:text="Expense List Pane"
+            android:gravity="right"
+            android:padding="3dip" />
+        </TableRow>
+
+        <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+        <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+        <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    </TableLayout>
+
+
+
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/PanelAddTeam"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="3"
+        android:rowCount="3"
+        >
+
+        <TextView
+            android:text="Current Members: "
+            android:padding="3dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:layout_gravity="fill"
+            />
+
+        <ListView
+            android:id="@+id/memberList"
+            android:background="#8CDD81"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_columnSpan="2"
+            android:layout_width="0dip"
+            android:layout_height="0dip"
+            android:layout_gravity="fill"
+            android:textSize="16sp"
+            android:alwaysDrawnWithCache="true"
+            android:dividerHeight="1dp"
+            android:horizontalSpacing="3dp"
+            android:scrollingCache="true"
+            android:smoothScrollbar="true"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="3dp"
+            />
+
+        <TextView
+            android:text="New member name: "
+            android:padding="3dip"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:layout_gravity="fill"
+            />
+
+
+        <EditText
+            android:id="@+id/editTextNewMemberName"
+            android:layout_column="1"
+            android:layout_row="1"
+            android:layout_width="0dip"
+            android:layout_gravity="fill_horizontal"
+            android:ems="10"
+            android:layout_columnWeight="1"
+            android:inputType="textPersonName"
+            android:text="" />
+
+
+        <Button
+            android:id="@+id/buttonAddMember"
+            android:layout_column="2"
+            android:layout_row="1"
+            android:layout_gravity="fill_horizontal"
+            android:text="Add to team" />
+
+
+        <Button
+            android:layout_column="0"
+            android:layout_row="2"
+            android:layout_gravity="fill_horizontal"
+            android:layout_columnSpan="2"
+            android:text="Register New Team"
+            android:id="@+id/buttonAddTeam"
+            />
+
+    </GridLayout>
+
+
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/PanelAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="1"
+        android:rowCount="2"
+        >
+
+        <TextView
+            android:text="Members: "
+            android:padding="3dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:layout_gravity="fill"
+            />
+
+        <ListView
+            android:id="@+id/memberListRegistered"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_columnSpan="1"
+            android:layout_width="0dip"
+            android:layout_height="0dip"
+            android:layout_gravity="fill"
+            android:textSize="16sp"
+            android:alwaysDrawnWithCache="true"
+            android:dividerHeight="1dp"
+            android:horizontalSpacing="3dp"
+            android:scrollingCache="true"
+            android:smoothScrollbar="true"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="3dp"
+            android:layout_marginBottom="30dp"
+            />
+
+
+    </GridLayout>
+
+
+
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/PanelSelectAccount"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="3"
+        android:rowCount="3"
+        >
+
+        <TextView
+            android:text="Available Teams, click to select: "
+            android:padding="3dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:layout_columnSpan="3"
+            android:layout_gravity="fill"
+            />
+
+        <ListView
+            android:id="@+id/listViewAvailableTeams"
+            android:background="#8CDD81"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_columnSpan="3"
+            android:layout_width="0dip"
+            android:layout_height="90dip"
+            android:layout_gravity="fill"
+            android:textSize="16sp"
+            android:alwaysDrawnWithCache="true"
+            android:dividerHeight="1dp"
+            android:horizontalSpacing="3dp"
+            android:scrollingCache="true"
+            android:smoothScrollbar="true"
+            android:verticalSpacing="3dp"
+            />
+
+        <TextView
+            android:text="Add Team: "
+            android:padding="3dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="2"
+            />
+
+        <EditText
+            android:id="@+id/editTextNewTeamLogin"
+            android:layout_column="1"
+            android:layout_row="2"
+            android:layout_width="0dip"
+            android:layout_gravity="fill_horizontal"
+            android:ems="10"
+            android:layout_columnWeight="1"
+            android:inputType="textPersonName"
+            android:text="" />
+
+        <Button
+            android:layout_column="2"
+            android:layout_row="2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Add"
+            android:id="@+id/buttonLoginTeam"
+            />
+
+
+    </GridLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>

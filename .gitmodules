@@ -1,0 +1,7 @@
+[submodule "lib/libpopcnt"]
+	path = lib/libpopcnt
+	url = https://github.com/kimwalisch/libpopcnt
+[submodule "lib/slugs"]
+	path = lib/slugs
+	url = https://github.com/VerifiableRobotics/slugs.git
+	ignore = untracked

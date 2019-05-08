@@ -1,0 +1,25 @@
+UVWBasedGame
+Input U
+Input V
+Output done
+Output X
+Output Y
+State Assumptions rej reject
+State Assumptions q0 initial
+State Assumptions q1 reject
+Transition Assumptions rej TRUE rej
+Transition Assumptions q0 TRUE q1
+Transition Assumptions q1 ! U q1
+State Guarantees qrej reject
+State Guarantees q0 initial
+State Guarantees q1 reject
+State Guarantees q2
+Transition Guarantees qrej TRUE qrej
+Transition Guarantees q0 U q1
+Transition Guarantees q1 X qrej
+Transition Guarantees q1 V q2
+Transition Guarantees q1 done q1
+Transition Guarantees q2 done q2
+Transition Guarantees q2 Y q2
+Transition Guarantees q1 ! X q1
+

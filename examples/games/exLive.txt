@@ -1,0 +1,47 @@
+UVWBasedGame
+Input thA.terminate
+Input thB.terminate
+Input thC.terminate
+Input doStuff
+Output done
+Output thA.start
+Output thB.start
+Output thC.start
+State Assumptions rej reject
+State Assumptions q0 initial
+State Assumptions q1 reject
+State Assumptions q2 reject
+State Assumptions q3 reject
+Transition Assumptions rej TRUE rej
+Transition Assumptions q0 TRUE q0
+Transition Assumptions q0 thA.start q1
+Transition Assumptions q0 thB.start q2
+Transition Assumptions q0 thC.start q3
+Transition Assumptions q1 ! thA.terminate q1
+Transition Assumptions q2 ! thB.terminate q2
+Transition Assumptions q3 ! thC.terminate q3
+State Guarantees qrej reject
+State Guarantees q0 initial
+State Guarantees qk reject
+State Guarantees q1 reject
+State Guarantees q2 reject
+State Guarantees q3 reject
+Transition Guarantees q0 thA.start q1
+Transition Guarantees q0 thB.start q2
+Transition Guarantees q0 thC.start q3
+State Guarantees q4 
+Transition Guarantees qrej TRUE qrej
+Transition Guarantees q0 TRUE q0
+Transition Guarantees q0 TRUE qk
+Transition Guarantees qk ! doStuff qk
+Transition Guarantees q0 thA.start q4
+Transition Guarantees q0 thB.start q4
+Transition Guarantees q0 thC.start q4
+Transition Guarantees q4 ! done q4
+Transition Guarantees q4 thA.start qrej
+Transition Guarantees q4 thB.start qrej
+Transition Guarantees q4 thC.start qrej
+Transition Guarantees q1 ! thA.terminate q1
+Transition Guarantees q2 ! thB.terminate q2
+Transition Guarantees q3 ! thC.terminate q3
+
