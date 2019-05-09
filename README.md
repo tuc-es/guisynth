@@ -89,3 +89,8 @@ cd ../..
 ```
 
 Note that the computation of all experiments takes ~24 hours. You can add the parameter "-j2" or "-j4" after "make" to parallelize the computation to 2 or 4 cores, but the reported performance will become worse in this way. A memory limit of 6 GB per process is set, so that a sufficient amount of memory for all processes run in parallel should be available. The results are stored in the "experiments/ExplicitGameSolverEvaluation/main.pdf" file if the call to pdflatex succeeds.
+
+
+Case study
+====================================
+An expense splitting Android application case study is available [here](https://github.com/tuc-es/ExpenseSplit), where the GUISynth framework was used to synthesize the GUI glue code. The project contains the specification and a script to use the GUISynth framework to resynthesize for a potentially modified specification.
