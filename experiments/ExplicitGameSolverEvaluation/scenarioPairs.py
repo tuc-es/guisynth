@@ -12,6 +12,7 @@ SCENARIO_PAIRS = [
  ("0007.20-Apr-2019.4eeb0a187b42a794b3a79a792eff3d513e142782.content_main.xml","0010.21-Apr-2019.eedabf84cd7ba648818a4da1af6d9bc23aa4ca84.mainActivitySpec.txt"),
  ("0007.20-Apr-2019.4eeb0a187b42a794b3a79a792eff3d513e142782.content_main.xml","0011.25-Apr-2019.159a61573ac3ce5b18824ccac3a67ffb5a6d308a.mainActivitySpec.txt"),
  ("0008.20-Apr-2019.e41e753edf2028d55b0b532505d9c3ba0849c480.content_main.xml","0012.27-Apr-2019.3379020f28070eeae9e05908d77115a43244d64d.mainActivitySpec.txt"),
+ ("0008.20-Apr-2019.e41e753edf2028d55b0b532505d9c3ba0849c480.content_main.xml","0013.20-Jun-2019.c562aab36751390a007eae6ab0edee5fc34920cf.mainActivitySpec.txt"),
  ]
 
 
