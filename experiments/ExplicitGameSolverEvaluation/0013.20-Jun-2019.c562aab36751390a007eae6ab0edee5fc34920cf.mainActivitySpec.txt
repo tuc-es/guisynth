@@ -175,18 +175,19 @@ G(buttonAddMember.click -> !done U addMemberToTeam)
 G(buttonAddTeam.click -> ((!done U registerNewTeam.start) & (!registerNewTeam.terminates U (registerNewTeam.terminates & (! done U updateAvailableTeamsList)))))
 
 
-# No parallel threads -- LoadTeam and StoreData are also exclusive
+# No two copies of the same thread running.
 G(registerNewTeam.start -> X !registerNewTeam.start U registerNewTeam.terminates)
+
+# No problematic thread execution combination
 G(loadTeam.start -> X !loadTeam.start U loadTeam.terminates)
-G(loadTeam.start -> X !storeData.start U loadTeam.terminates)
 G(storeData.start -> X !loadTeam.start U storeData.terminates)
 G(storeData.start -> X !storeData.start U storeData.terminates)
 
 
 # New Team ID
 G(buttonLoginTeam.click -> !done U addTeamToTeamList)
-G(listViewAvailableTeams.selected -> !done U loadTeam.start)
-G(addTeamToTeamList -> (ANYOUTPUTS W (newTeamIdentifierIsFine -> !done U loadTeam.start)))
+G(listViewAvailableTeams.selected -> F loadTeam.start)
+G(addTeamToTeamList -> (ANYOUTPUTS W (newTeamIdentifierIsFine -> F loadTeam.start)))
 
 # Store data thread
 G(storeData.terminates -> ((actionToBeExecutedWasStored -> !done U storeData.start) W storeData.start))

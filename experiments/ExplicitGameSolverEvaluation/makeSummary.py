@@ -73,8 +73,8 @@ for i,(x,a) in enumerate(SCENARIO_PAIRS):
     with open(destPerf,"r") as inFile:
         perf = None
         for line in inFile.readlines():
-            if line.startswith("FINISHED CPU "):
-                perf = line.split(" ")[2]
+            if line.startswith("<time name=\"ALL\">"):
+                    perf = str(float(line.split(">")[1].split("<")[0])/1000.0)
         assert not perf is None
         print(perf+" & ")
         
@@ -134,7 +134,7 @@ for i,(x,a) in enumerate(SCENARIO_PAIRS):
                 elif line.startswith("TIMEOUT CPU"):
                     perf = "t/o"
             if perf is None:
-                print("Failure to detect result in file "+destGR1,file=sys.stderr)
+                print("Failure to detect result in file "+resultFile,file=sys.stderr)
                 sys.exit(1)
             if resultFile!=destStrix:
                 print(perf+" & ")

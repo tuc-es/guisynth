@@ -324,6 +324,25 @@ for sectionName in ["Assumptions","Guarantees"]:
             print("Translation succeeded!",file=sys.stderr)
         translatedSections[sectionName] = "".join([a.decode().replace("**TYPE**",sectionName) for a in linesOut])
 
+
+# =====================================================
+# Modify guarantees to not have states rejecting that
+# have done-transitions to the error state
+# =====================================================
+doneRejectingStates = []
+for a in translatedSections["Guarantees"].split("\n"):
+    a = a.split(" ")
+    if a[0]=="Transition" and a[3]=="done" and a[4]=="q0":
+        doneRejectingStates.append(a[2])
+newGuarantees = []
+for a in translatedSections["Guarantees"].split("\n"):
+    a = a.split(" ")
+    if len(a)>3 and a[0]=="State" and a[3]=="reject" and a[2] in doneRejectingStates:
+        a = a[0:3]+a[4:]
+    newGuarantees.append(" ".join(a)+"\n")
+translatedSections[sectionName] = "".join(newGuarantees)        
+
+
 # =====================================================
 # Build overall specification file
 # =====================================================
@@ -334,6 +353,7 @@ overallSpecFile.append(translatedSections["Assumptions"])
 overallSpecFile.append(translatedSections["Guarantees"])
 overallSpecFile.append("") # Empty line at the end
 print("Spec:\n"+"\n".join(overallSpecFile),file=sys.stderr)
+
 
 
 # =====================================================
