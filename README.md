@@ -94,3 +94,5 @@ Note that the computation of all experiments takes ~24 hours. You can add the pa
 Case study
 ====================================
 An expense splitting Android application case study is available [here](https://github.com/tuc-es/ExpenseSplit), where the GUISynth framework was used to synthesize the GUI glue code. The project contains the specification and a script to use the GUISynth framework to resynthesize for a potentially modified specification.
+
+We also provide the case study specifications in the [TLSF format](https://arxiv.org/abs/1604.02284) (as used by the [SyntCOMP](http://www.syntcomp.org/) reactive synthesis competition) [here](https://github.com/tuc-es/guisynth/raw/master/experiments/ExplicitGameSolverEvaluation/CostSplitGUISpecificationsTLSF.zip).
