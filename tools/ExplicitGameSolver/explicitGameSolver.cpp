@@ -247,11 +247,11 @@ bool ExplicitGameSolver::solve() {
             positions[i].lastOutgoingTransitionsAlreadyExplored[nofAction] = std::max(
                 positions[i].lastOutgoingTransitionsAlreadyExplored[nofAction], 0);*/
 
-            for(unsigned int i=0;i<positions[i].outgoingTransitionsPerEnvironmentInput[nofAction].size();i++) {
+            for(unsigned int t=0;t<positions[i].outgoingTransitionsPerEnvironmentInput[nofAction].size();t++) {
                 if (positions[
-                        positions[i].outgoingTransitionsPerEnvironmentInput[nofAction][i].target].deadEndWinningStatus==-1) {
-                    positions[i].outgoingTransitionsPerEnvironmentInput[nofAction].erase(positions[i].outgoingTransitionsPerEnvironmentInput[nofAction].begin()+i);
-                    i--;
+                        positions[i].outgoingTransitionsPerEnvironmentInput[nofAction][t].target].deadEndWinningStatus==-1) {
+                    positions[i].outgoingTransitionsPerEnvironmentInput[nofAction].erase(positions[i].outgoingTransitionsPerEnvironmentInput[nofAction].begin()+t);
+                    t--;
                 }
             }
         }
