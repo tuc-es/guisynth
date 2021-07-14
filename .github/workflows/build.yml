@@ -38,7 +38,7 @@ jobs:
     - name: Install qmake
       run: sudo apt-get install qt5-qmake qt5-default
     - name: Compile the ltltopolish tool
-      run: cd tools/ltltopolish; qmake Tool.pro; make
+      run: cd tools/LTLToPolish; qmake Tool.pro; make
     - name: Compile the game solver
       run: cd tools/ExplicitGameSolver/; qmake Tool.pro; make
 

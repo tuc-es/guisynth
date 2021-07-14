@@ -27,7 +27,8 @@ SOURCES += ltl2polish.cc
 TARGET = ltl2polish
 INCLUDEPATH = ../../lib/spot ../../lib/spot/buddy/src
 
-LIBS += -static -L../../lib/spot/spot -L../../lib/spot/spot/tl/.libs -ltl -lspot
+LIBS += -static -L../../lib/spot/spot -L../../lib/spot/spot/.libs -L../../lib/spot/spot/tl/.libs -ltl -lspot
+
 
 PKGCONFIG += 
 QT -= gui \

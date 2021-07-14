@@ -234,6 +234,7 @@ ExplicitGameSolver::ExplicitGameSolver(GameSolvingProblem &_problem) : problem(_
  */
 bool ExplicitGameSolver::solve() {
 
+
     /*
      * First things first -- We remove the transitions that are losing already
      */
@@ -897,7 +898,6 @@ void ExplicitGameSolver::explorePosition(int positionNumber) {
                 positions.push_back(Position(onlyState,problem,*this));
                 positionNumberLookup[onlyState] = positions.size()-1;
                 targetPositionNumber = positions.size()-1;
-                std::cerr << "#Positions: " << positions.size() << std::endl;
             } else {
                 // Old state!
                 targetPositionNumber = finder->second;
