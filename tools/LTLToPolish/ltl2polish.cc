@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include <cstdlib>
-#include "spot/misc/game.hh"
+// #include "spot/misc/game.hh"
 #include "spot/tl/formula.hh"
 #include "spot/tl/parse.hh"
 #include "spot/parsetl/parsetl.hh"
@@ -81,28 +81,27 @@ void printPolish(const formula &f) {
 int main(int argc, char** argv)
 {
     (void)argv;
-    (void)argv;
+    (void)argc;
     try {
 
       std::string input;
-      while (std::getline(std::cin,input))
-{
-      //const char *input = argv[1];
+      while (std::getline(std::cin,input)) {
+          //const char *input = argv[1];
 
 
-      spot::environment& env(spot::default_environment::instance());
+          spot::environment& env(spot::default_environment::instance());
 
-      auto pf = spot::parse_infix_psl(input.c_str(), env, false);
-      int exit_code = pf.format_errors(std::cerr);
-      if ((exit_code)==0)  {
-        formula f = pf.f;
-        std::cout << "LTL";
-        printPolish(f);
-        std::cout << std::endl;
-      } else {
-          return 1;
+          auto pf = spot::parse_infix_psl(input.c_str(), env, false);
+          int exit_code = pf.format_errors(std::cerr);
+          if ((exit_code)==0)  {
+            formula f = pf.f;
+            std::cout << "LTL";
+            printPolish(f);
+            std::cout << std::endl;
+          } else {
+              return 1;
+          }
       }
-}
     } catch (const char *error) {
         std::cerr << error << std::endl;
         return 1;
