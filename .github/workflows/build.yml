@@ -1,0 +1,44 @@
+name: Testing tool compilation & running the monitor generator on an example
+
+on: [push]
+
+env:
+  BUILD_TYPE: Release
+  CCACHE_VERSION: 4.2.1
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - {
+            name: "Ubuntu Latest GCC", 
+            os: ubuntu-latest,
+            cc: "gcc", cxx: "g++"
+          }
+
+
+    steps:
+    # SRC: https://stackoverflow.com/questions/67457510/git-submodule-update-remote-merge-yields-fatal-needed-a-single-revision
+    - uses: actions/checkout@main
+      with:
+         # we need the submodules.
+         submodules: recursive
+    - name: Update submodule.
+      run: git submodule update --remote
+    - name: Install various packages needed for compiling spot
+      run: sudo apt-get install latexmk texlive-latex-extra texlive-fonts-extra texlive-science pdf2svg
+    - name: Get SPOT
+      run: cd lib; git clone https://gitlab.lrde.epita.fr/spot/spot.git; cd spot; git checkout edfcd5b0d8f3862c7eebb3adbd035ba84df7d753; autoreconf -i; ./configure --disable-devel; make
+    - name: Get the dd library
+      run: pip3 install dd
+    - name: Install qmake
+      run: sudo apt-get install qt5-qmake qt5-default
+    - name: Compile the ltltopolish tool
+      run: cd tools/ltltopolish; qmake Tool.pro; make
+    - name: Compile the game solver
+      run: cd tools/ExplicitGameSolver/; qmake Tool.pro; make
+
