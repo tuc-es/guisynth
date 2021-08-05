@@ -75,55 +75,68 @@ root = tree.getroot()
 # ============================================
 OUTPUT_EVENTS_BY_TYPE = {
     "Button":["enable","disable"],
+    "ImageButton":["enable","disable"],
     "TextView":[],
 	"CheckBox":["check","uncheck"],
 	"Switch":["check","uncheck"],
 	"ImageView":[],
 	"TableLayout":["hide","show"],
 	"GridLayout":["hide","show"],
-	"TableRow":[],	
+	"TableRow":[],
+    "androidx.constraintlayout.widget.ConstraintLayout":["hide","show"],
 	"android.support.design.widget.NavigationView":[],
+    "com.google.android.material.navigation.NavigationView":[],
 	"ListView":["enable","disable"],
-	"EditText":["enable","disable"],	
+	"EditText":["enable","disable"],
 	"WebView":[],
 	"Spinner":[],
+    "GridView":["enable","disable"],
 }
 
 INPUT_EVENTS_BY_TYPE = {
     "Button":["click"],
+    "ImageButton":["click"],
     "TextView":[],
     "Switch":["click","checked","unchecked"],
 	"CheckBox":["click","checked","unchecked"],
 	"ImageView":[],
 	"GridLayout":[],
+    "androidx.constraintlayout.widget.ConstraintLayout":[],
 	"TableLayout":[],
-	"TableRow":[],	
+	"TableRow":[],
 	"android.support.design.widget.NavigationView":[],
+    "com.google.android.material.navigation.NavigationView":[],
 	"ListView":["selected"],
 	"EditText":[],
 	"WebView":[],
 	"Spinner":[],
+    "GridView":["selected"],
 }
 
 GUI_OBJECTS_SHOULD_RECURSE = {
     "Button":False,
+    "ImageButton":False,
     "TextView":False,
     "Switch":False,
 	"CheckBox":False,
 	"ImageView":False,
 	"TableLayout":True,
 	"GridLayout":True,
-	"TableRow":True,	
+    "androidx.constraintlayout.widget.ConstraintLayout":True,
+	"TableRow":True,
 	"android.support.design.widget.NavigationView":True,
 	"ListView":False,
 	"EditText":False,
 	"WebView":False,
 	"Spinner":False,
+    "GridView":False,
 }
 
 OUTPUT_EVENT_TO_CODE_MAPPER = {
     ("Button","enable"):(lambda x: "final Button b = findViewById(R.id."+x+"); b.setEnabled(true);"),
     ("Button","disable"):(lambda x: "final Button b = findViewById(R.id."+x+"); b.setEnabled(false);"),
+    ("ImageButton","enable"):(lambda x: "final ImageButton b = findViewById(R.id."+x+"); b.setEnabled(true);"),
+    ("ImageButton","disable"):(lambda x: "final ImageButton b = findViewById(R.id."+x+"); b.setEnabled(false);"),
 	("Checkbox","check"):(lambda x: "final Checkbox c = findViewById(R.id."+x+"); c.setChecked(true);"),
 	("Checkbox","uncheck"):(lambda x: "final Checkbox c = findViewById(R.id."+x+"); c.setChecked(false);"),
     ("EditText","enable"):(lambda x: "final EditText b = findViewById(R.id."+x+"); b.setEnabled(true);"),
@@ -134,14 +147,25 @@ OUTPUT_EVENT_TO_CODE_MAPPER = {
 	("TableLayout","show"):(lambda x: "final TableLayout c = findViewById(R.id."+x+"); c.setVisibility(View.VISIBLE);"),
 	("GridLayout","hide"):(lambda x: "final GridLayout c = findViewById(R.id."+x+"); c.setVisibility(View.INVISIBLE);"),
 	("GridLayout","show"):(lambda x: "final GridLayout c = findViewById(R.id."+x+"); c.setVisibility(View.VISIBLE);"),
+    ("androidx.constraintlayout.widget.ConstraintLayout","hide"):(lambda x: "final androidx.constraintlayout.widget.ConstraintLayout c = findViewById(R.id."+x+"); c.setVisibility(View.INVISIBLE);"),
+	("androidx.constraintlayout.widget.ConstraintLayout","show"):(lambda x: "final androidx.constraintlayout.widget.ConstraintLayout c = findViewById(R.id."+x+"); c.setVisibility(View.VISIBLE);"),
     ("ListView","enable"):(lambda x: "final ListView b = findViewById(R.id."+x+"); b.setEnabled(true);"),
     ("ListView","disable"):(lambda x: "final ListView b = findViewById(R.id."+x+"); b.setEnabled(false);"),
+    ("GridView","enable"):(lambda x: "final GridView b = findViewById(R.id."+x+"); b.setEnabled(true);"),
+    ("GridView","disable"):(lambda x: "final GridView b = findViewById(R.id."+x+"); b.setEnabled(false);"),
 
 }
 
 INPUT_OBJECT_TO_CODE_MAPPER = {
     "Button":(lambda x,y: """{ final Button k = findViewById(R.id."""+x+""");
     k.setOnClickListener(new Button.OnClickListener() {
+        public void onClick(View v) {
+                """+y["click"]+"""
+                }
+        }); }"""),
+
+    "ImageButton":(lambda x,y: """{ final ImageButton k = findViewById(R.id."""+x+""");
+    k.setOnClickListener(new ImageButton.OnClickListener() {
         public void onClick(View v) {
                 """+y["click"]+"""
                 }
@@ -177,10 +201,20 @@ INPUT_OBJECT_TO_CODE_MAPPER = {
             }
         }); }"""),
 
+    "GridView":(lambda x,y: """{ final GridView k = findViewById(R.id."""+x+""");
+    k.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedItem_"""+x+""" = i;
+                """+y["selected"]+"""
+            }
+        }); }"""),
+
 }
 
 INPUT_OBJECT_TO_AUTO_GENERATED_DECLARATION_CODE_MAPPER = {
     "ListView":(lambda x,y: """int selectedItem_"""+x+""" = -1;
+                """),
+    "GridView":(lambda x,y: """int selectedItem_"""+x+""" = -1;
                 """)
 }
 
@@ -196,26 +230,26 @@ typeOfObjectsUsedInSpecifications = {}
 # Actions from the UI elements
 def recurseProcess(child):
     elementType = child.tag
-    if elementType=="android.support.constraint.ConstraintLayout":
-        for child2 in child.getchildren():
-            recurseProcess(child2)
+    #if elementType=="android.support.constraint.ConstraintLayout" or elementType=="androidx.constraintlayout.widget.ConstraintLayout":
+    #    for child2 in child.getchildren():
+    #        recurseProcess(child2)
+
+    # Get ID of the child (and filter out prefix
+    if not "{http://schemas.android.com/apk/res/android}id" in child.attrib:
+        print("Warning: There exists a "+elementType+" element with no ID -- it thus cannot be used in the specification.")
+        if GUI_OBJECTS_SHOULD_RECURSE[elementType]:
+            for child2 in child.getchildren():
+                recurseProcess(child2)
     else:
-        # Get ID of the child (and filter out prefix
-        if not "{http://schemas.android.com/apk/res/android}id" in child.attrib:
-            print("Warning: There exists a "+elementType+" element with no ID -- it thus cannot be used in the specification.")
-            if GUI_OBJECTS_SHOULD_RECURSE[elementType]:
-                for child2 in child.getchildren():
-                    recurseProcess(child2)
-        else:
-            idName = child.attrib["{http://schemas.android.com/apk/res/android}id"]
-            if idName.startswith("@+id/"):
-                idName = idName[5:]
-            inputEvents.extend([idName+"."+a for a in INPUT_EVENTS_BY_TYPE[elementType]])
-            outputEvents.extend([idName+"."+a for a in OUTPUT_EVENTS_BY_TYPE[elementType]])
-            typeOfObjectsUsedInSpecifications[idName] = elementType
-            if GUI_OBJECTS_SHOULD_RECURSE[elementType]:
-                for child2 in child.getchildren():
-                    recurseProcess(child2)
+        idName = child.attrib["{http://schemas.android.com/apk/res/android}id"]
+        if idName.startswith("@+id/"):
+            idName = idName[5:]
+        inputEvents.extend([idName+"."+a for a in INPUT_EVENTS_BY_TYPE[elementType]])
+        outputEvents.extend([idName+"."+a for a in OUTPUT_EVENTS_BY_TYPE[elementType]])
+        typeOfObjectsUsedInSpecifications[idName] = elementType
+        if GUI_OBJECTS_SHOULD_RECURSE[elementType]:
+            for child2 in child.getchildren():
+                recurseProcess(child2)
 
 for child in root.getchildren():
     recurseProcess(child)
@@ -273,14 +307,14 @@ with subprocess.Popen(basePath+"../LTLToPolish/ltl2polish",stdin=subprocess.PIPE
             polished = polished.decode().strip()
             assert polished.startswith("LTL ")
             polished = polished[4:]
-            
+
             # replace ANYOUTPUTS
             parts = polished.split(" ")
             for i,a in enumerate(parts):
                 if a=="ANYOUTPUTS":
                     parts[i] = "| "*(len(outputEvents)-1)+" ".join(outputEvents)
             polished = " ".join(parts)
-            
+
             specFileParts[sectionName][specFilePartLineNo] = (polished,lineNo,lineText)
     polishProcess.stdin.close()
 
